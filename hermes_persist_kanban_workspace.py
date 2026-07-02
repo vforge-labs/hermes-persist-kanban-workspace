@@ -1,22 +1,14 @@
 """
-persist-workspace plugin — implementation.
+persist-workspace plugin — board metadata resolution.
 
-Resolves the board's default workspace path and wires the
-``kanban_create_persist`` tool to the built-in ``kanban_create``
-with ``workspace_kind=dir`` injected.
+Provides ``get_default_workdir()`` used by the override handler in
+``__init__.py`` to resolve a persistent workspace path.
 """
 
 from __future__ import annotations
 
 import json
-import logging
 from pathlib import Path
-
-logger = logging.getLogger(__name__)
-
-# ---------------------------------------------------------------------------
-# Board metadata helpers
-# ---------------------------------------------------------------------------
 
 DEFAULT_BOARD_DIR = Path.home() / ".hermes" / "kanban"
 DEFAULT_BOARD_JSON = DEFAULT_BOARD_DIR / "board.json"
@@ -48,30 +40,3 @@ def get_default_workdir() -> str:
     fallback = DEFAULT_BOARD_DIR / "workspaces" / "persist"
     fallback.mkdir(parents=True, exist_ok=True)
     return str(fallback)
-
-
-# ---------------------------------------------------------------------------
-# Schema
-# ---------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
-# Handler
-# ---------------------------------------------------------------------------
-
-
-def handle_kanban_create_persist(params: dict, **kwargs) -> str:
-    """Inject dir workspace, then delegate to the built-in kanban_create."""
-
-    # Default to dir workspace unless explicitly set to something else
-    wk = params.get("workspace_kind")
-    if wk is None or wk == "scratch":
-        params["workspace_kind"] = "dir"
-
-    # Resolve workspace_path from board metadata when not specified
-    if params.get("workspace_kind") == "dir" and not params.get("workspace_path"):
-        params["workspace_path"] = get_default_workdir()
-
-    # Dispatch to the built-in tool via the registry
-    from tools.registry import registry
-
-    return registry.dispatch("kanban_create", params, **kwargs)
