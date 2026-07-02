@@ -1,4 +1,4 @@
-name: persist-workspace
+name: hermes-persist-kanban-workspace
 version: "1.0.0"
 description: >
   Wraps kanban_create to default to a persistent ``dir:`` workspace
@@ -6,5 +6,11 @@ description: >
   Registers the ``kanban_create_persist`` tool in the ``kanban`` toolset
   so it appears alongside the built-in kanban tools.
 author: qsh
-homepage: https://github.com/vforge-labs/persist-workspace
+homepage: https://github.com/vforge-labs/hermes-persist-kanban-workspace
 license: Apache-2.0
+tags:
+  - kanban
+  - workspace
+  - persistence
+  - hermes-plugin
+  - task-management

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 
-from .persist_workspace import (
+from .hermes_persist_kanban_workspace import (
     KANBAN_CREATE_PERSIST_SCHEMA,
     handle_kanban_create_persist,
 )
@@ -32,4 +32,4 @@ def register(ctx) -> None:
             "on completion (dir: instead of scratch)."
         ),
     )
-    logger.info("persist-workspace: registered kanban_create_persist tool")
+    logger.info("hermes-persist-kanban-workspace: registered kanban_create_persist tool")

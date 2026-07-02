@@ -1,4 +1,4 @@
-# persist-workspace
+# hermes-persist-kanban-workspace
 
 A [Hermes Agent](https://hermes-agent.nousresearch.com) plugin that prevents
 kanban task outputs from being silently deleted.
@@ -28,8 +28,8 @@ default changes from ``scratch`` to ``dir``.
 
 ```bash
 # Clone into your user plugins directory
-git clone https://github.com/vforge-labs/persist-workspace.git \
-    ~/.hermes/plugins/persist-workspace
+git clone https://github.com/vforge-labs/hermes-persist-kanban-workspace.git \
+    ~/.hermes/plugins/hermes-persist-kanban-workspace
 
 # Enable the plugin
 hermes plugins enable persist-workspace
@@ -38,7 +38,7 @@ hermes plugins enable persist-workspace
 Or install directly from the repo:
 
 ```bash
-pip install git+https://github.com/vforge-labs/persist-workspace.git
+pip install git+https://github.com/vforge-labs/hermes-persist-kanban-workspace.git
 ```
 
 ## Configuration

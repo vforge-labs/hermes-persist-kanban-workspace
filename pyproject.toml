@@ -3,17 +3,25 @@ requires = ["setuptools>=64"]
 build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
-name = "hermes-persist-workspace"
+name = "hermes-persist-kanban-workspace"
 version = "1.0.0"
 description = "Hermes Agent plugin: persistent kanban workspaces (dir: instead of scratch)"
 license = { text = "Apache-2.0" }
 authors = [
     { name = "qsh", email = "qsh@qsh.local" },
 ]
+keywords = ["hermes", "kanban", "plugin", "workspace", "persistence", "hermes-plugin"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Monitoring",
+]
 
 [project.entry-points."hermes_agent.plugins"]
-persist-workspace = "persist_workspace"
+hermes-persist-kanban-workspace = "hermes_persist_kanban_workspace"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["persist_workspace*"]
+include = ["hermes_persist_kanban_workspace*"]
