@@ -4,7 +4,7 @@ build-backend = "setuptools.backends._legacy:_Backend"
 
 [project]
 name = "hermes-persist-kanban-workspace"
-version = "1.0.0"
+version = "1.1.0"
 description = "Hermes Agent plugin: persistent kanban workspaces (dir: instead of scratch)"
 license = { text = "Apache-2.0" }
 authors = [

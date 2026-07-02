@@ -1,10 +1,11 @@
 name: hermes-persist-kanban-workspace
-version: "1.0.0"
+version: "1.1.0"
 description: >
-  Wraps kanban_create to default to a persistent ``dir:`` workspace
-  instead of ``scratch`` (which deletes output on completion).
-  Registers the ``kanban_create_persist`` tool in the ``kanban`` toolset
-  so it appears alongside the built-in kanban tools.
+  Overrides the built-in ``kanban_create`` tool to default to a
+  persistent ``dir:`` workspace instead of ``scratch`` (which deletes
+  output on completion). Explicit ``workspace_kind='scratch'`` is
+  still honoured for throwaway tasks. Schema derived from the core
+  tool at registration time to prevent drift.
 author: qsh
 homepage: https://github.com/vforge-labs/hermes-persist-kanban-workspace
 license: Apache-2.0
