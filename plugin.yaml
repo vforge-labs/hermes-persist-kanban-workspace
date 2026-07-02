@@ -1,0 +1,10 @@
+name: persist-workspace
+version: "1.0.0"
+description: >
+  Wraps kanban_create to default to a persistent ``dir:`` workspace
+  instead of ``scratch`` (which deletes output on completion).
+  Registers the ``kanban_create_persist`` tool in the ``kanban`` toolset
+  so it appears alongside the built-in kanban tools.
+author: qsh
+homepage: https://github.com/vforge-labs/persist-workspace
+license: Apache-2.0
