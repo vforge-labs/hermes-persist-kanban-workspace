@@ -14,15 +14,13 @@ This catches everyone eventually. Most task output matters.
 
 ## Solution
 
-Registers a ``kanban_create_persist`` tool (in the ``kanban`` toolset) that
-wraps the built-in ``kanban_create`` and injects:
+Overrides the built-in ``kanban_create`` tool to default to a persistent
+``dir:`` workspace. When a caller already provides explicit ``workspace_kind``
+or ``workspace_path`` they are honoured; only the default changes from
+``scratch`` to ``dir``.
 
-- ``workspace_kind=dir`` — persistent on-completion
-- ``workspace_path`` — resolved from the board's ``default_workdir``
-
-The tool accepts all the same parameters as the built-in. When a caller
-already provides explicit workspace values they are honoured; only the
-default changes from ``scratch`` to ``dir``.
+The tool schema is cloned from the core tool at registration time, so it
+always stays in sync — no drift, no manual updates.
 
 ## Installation
 
@@ -32,13 +30,20 @@ git clone https://github.com/vforge-labs/hermes-persist-kanban-workspace.git \
     ~/.hermes/plugins/hermes-persist-kanban-workspace
 
 # Enable the plugin
-hermes plugins enable persist-workspace
+hermes plugins enable hermes-persist-kanban-workspace
 ```
 
 Or install directly from the repo:
 
 ```bash
 pip install git+https://github.com/vforge-labs/hermes-persist-kanban-workspace.git
+```
+
+**After enabling or updating the plugin, restart the Hermes dashboard and
+gateway so the override is picked up:**
+
+```bash
+systemctl --user restart hermes-dashboard hermes-gateway
 ```
 
 ## Configuration
@@ -53,30 +58,44 @@ Without this, the plugin falls back to ``~/.hermes/kanban/workspaces/persist/``.
 
 ## Usage
 
-Once enabled, the model sees ``kanban_create_persist`` alongside the built-in
-kanban tools. Use it the same way:
+Once enabled and restarted, every call to ``kanban_create`` defaults to
+a persistent workspace with no extra effort:
 
 ```python
-kanban_create_persist(
+kanban_create(
     title="Research: my topic",
     assignee="researcher",
     body="investigate from all angles...",
 )
+# → workspace_kind: "dir", workspace_path: <default_workdir>
 ```
 
-The output survives task completion. When you need a throwaway scratch
-workspace, use the built-in ``kanban_create`` with explicit
-``workspace_kind="scratch"``.
+Output survives task completion. When you need a throwaway scratch workspace,
+pass it explicitly:
+
+```python
+kanban_create(
+    title="Quick exploration",
+    assignee="default",
+    workspace_kind="scratch",
+)
+```
 
 ## How it works
 
-1. Tool handler checks if ``workspace_kind`` is unset or ``"scratch"``
-2. If so, sets it to ``"dir"`` and resolves a workspace path from board
-   metadata
-3. Delegates to the built-in ``kanban_create`` via the tool registry
-4. The task is created with a ``dir:`` workspace — preserved on completion
+1. On plugin load, the original ``kanban_create`` handler is captured
+2. A new handler is registered under the same name with ``override=True``
+3. The new handler checks if ``workspace_kind`` is unset — if so, injects
+   ``"dir"`` and resolves a path from board metadata
+4. Delegates to the original handler via the saved reference
+5. The task is created with a ``dir:`` workspace — preserved on completion
 
 No core Hermes code is patched. The plugin lives entirely in user space.
+
+## Compatibility
+
+Requires Hermes Agent 0.9+ (uses the ``override`` flag on
+``ctx.register_tool``, introduced in 0.9.x).
 
 ## License
 
